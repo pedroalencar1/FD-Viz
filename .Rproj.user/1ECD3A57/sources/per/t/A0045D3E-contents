@@ -1,0 +1,142 @@
+wd <- "C:/Users/pedro/OneDrive/@DOUTORADO/@@TU-Berlin/@Artigos/CAP 4/@run_EU_Stations/Processing"
+setwd(wd)
+
+library(fdClassify)
+
+################################## FLUXNET #########################################
+flux_dir <- 'C:/Users/pedro/OneDrive/@DOUTORADO/@@TU-Berlin/@Artigos/CAP 4/@run_EU_Stations/fluxnet/'
+
+flux_files <- list.files(flux_dir)
+flux_files <- flux_files[-c(1)]
+
+flux_names <- substr(flux_files, start = 5, stop = 10)
+# catch errors:
+# for (i in 1:3){
+#   skip_to_next <- FALSE
+#
+#   df_d <- df_fluxnet(paste(flux_dir,flux_files[i], sep = ''), timestep = 'day', soil_level = 1)
+#   tryCatch({
+#     complete_series <- process_all(df_d, include_variables = T)[[1]]
+#
+#   }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
+#
+#
+#   # complete_series <- process_all(df_d, include_variables = T)[[1]]
+# }
+
+
+for (i in 1:length(flux_files)){
+  #build DF
+  df_d <- df_fluxnet(paste(flux_dir,flux_files[i], sep = ''), timestep = 'day', soil_level = 1)
+
+  #Process methods
+  complete_series <- process_all(df_d, include_variables = T)[[1]]
+
+  #export file
+  write.csv(complete_series, paste(flux_names[i],'_FLUXNET2015', '.csv', sep = ''))
+  print(i)
+}
+
+################################# SINGLE PROCESS ################################
+i = 15
+
+# test <- read.csv(paste(flux_dir,flux_files[i], sep = ''))
+# View(test)
+#build DF
+df_d <- df_fluxnet(paste(flux_dir,flux_files[i], sep = ''), timestep = 'day', soil_level = 1)
+
+#Process methods
+complete_series <- process_all(df_d, include_variables = T)[[1]]
+
+#export file
+write.csv(complete_series, paste(flux_names[i], '.csv', sep = ''))
+
+
+################################## ERA5 #########################################
+
+#DE_GEB
+era_geb_dir <- 'C:/Users/pedro/OneDrive/@DOUTORADO/@@TU-Berlin/@Artigos/CAP 4/@run_EU_Stations/era5/germany/geb/'
+era_geb_files <- list.files(era_geb_dir)
+era_geb_files <- paste(era_geb_dir,era_geb_files, sep = '')
+
+
+lat_geb <- 51.0997
+lon_geb <- 10.9146
+
+df_f_geb <- get_df_era5(era_geb_files, lat = lat_geb, lon = lon_geb, soil_layers = c(1))
+
+complete_series <- process_all(df_f_geb, include_variables = T, data = 'reanalysis')[[1]]
+
+# View(complete_series)
+
+write.csv(complete_series, paste('DE-Geb','_ERA5', '.csv', sep = ''))
+
+
+# test <- get.nc.data(my_lon = lon_geb,my_lat = lat_geb,my_filename = era_geb_files[1],vname = 'pev', file = F)
+# View(test)
+# 
+# 
+# test2 <- get.nc.data(my_lon = lon_geb,my_lat = lat_geb,my_filename = era_geb_files[1],vname = 'e', file = F)
+# View(test2)
+
+#DE_KLI
+era_kli_dir <- 'C:/Users/pedro/OneDrive/@DOUTORADO/@@TU-Berlin/@Artigos/CAP 4/@run_EU_Stations/era5/germany/kli/'
+era_kli_files <- list.files(era_kli_dir)
+era_kli_files <- paste(era_kli_dir,era_kli_files, sep = '')
+
+
+lat_kli <- 50.8931
+lon_kli <- 13.5224
+
+df_f_kli <- get_df_era5(era_kli_files, lat = lon_kli, lon = lon_kli, soil_layers = c(1))
+
+complete_series <- process_all(df_f_kli, include_variables = T, data = 'reanalysis')[[1]]
+write.csv(complete_series, paste('DE-Kli','_ERA5', '.csv', sep = ''))
+
+
+
+############### Run multiple ERA5 datasets
+
+area_data <- read.delim('C:/Users/pedro/OneDrive/@DOUTORADO/@@TU-Berlin/@Artigos/CAP 4/@run_EU_Stations/era5/general/reference/data.txt')
+setwd('C:/Users/pedro/OneDrive/@DOUTORADO/@@TU-Berlin/@Artigos/CAP 4/@run_EU_Stations/era5/data/')
+
+files_era <- data.table::data.table(list.files())
+n_files <- nrow(files_era)
+
+files_era$area <- substr(files_era$V1, start = 1, stop = 6)
+
+file_area <- split(files_era, by = 'area')
+
+n_areas <- length(file_area)
+
+for (i in 1:n_areas){
+  # i =1
+  files <- file_area[[i]]$V1
+  area <- substr(files[1], start = 1, stop = 6)
+  id <- which(area == area_data$station)
+  latitude <- area_data$lat1[id] + 1
+  longitude <- area_data$lon1[id] + 1
+  print(paste(i,area, sep = '-'))
+  
+  df_era <- get_df_era5(files, lat = latitude, lon = longitude, soil_layers = c(1))
+  
+  complete_series <- process_all(df_era, include_variables = T, data = 'reanalysis')[[1]]
+  write.csv(complete_series, paste(area,'_ERA5', '.csv', sep = ''))
+  
+}
+
+i = 2
+files <- file_area[[i]]$V1
+area <- substr(files[1], start = 1, stop = 6)
+id <- which(area == area_data$station)
+latitude <- area_data$lat1[id] + 1
+longitude <- area_data$lon1[id] + 1
+print(paste(i,area, sep = '-'))
+
+df_era <- get_df_era5(files, lat = latitude, lon = longitude, soil_layers = c(1))
+
+complete_series <- process_all(df_era, include_variables = T, data = 'reanalysis')[[1]]
+write.csv(complete_series, paste(area,'_ERA5', '.csv', sep = ''))
+
+
+

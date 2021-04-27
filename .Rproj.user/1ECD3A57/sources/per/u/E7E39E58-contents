@@ -1,0 +1,29 @@
+for (i in 1:length(flux_files)){
+  #build DF
+  df_d <- df_fluxnet(paste(flux_dir,flux_files[i], sep = ''), timestep = 'day', soil_level = 1)
+  
+  #Process methods
+  complete_series <- process_all(df_d, include_variables = T)[[1]]
+  
+  #export file
+  write.csv(complete_series, paste(flux_names[i],'_FLUXNET2015', '.csv', sep = ''))
+  print(i)
+}
+
+################################# SINGLE PROCESS ################################
+i = 8
+
+# test <- read.csv(paste(flux_dir,flux_files[i], sep = ''))
+# View(test)
+#build DF
+df_d <- df_fluxnet(paste(flux_dir,flux_files[i], sep = ''), timestep = 'day', soil_level = 1)
+
+test <- FordLabosier2017(vtime = df_d$time, vswc = df_d$soil_water)[[1]]
+
+View(test)
+
+#Process methods
+complete_series <- process_all(df_d, include_variables = T)[[1]]
+
+#export file
+write.csv(complete_series, paste(flux_names[i], '.csv', sep = ''))
