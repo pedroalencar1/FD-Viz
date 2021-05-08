@@ -43,11 +43,13 @@ ui <- fluidPage(
             selectInput("Method 1", "Choose Method 1", choices = models, selected = 'Ford and Labosier'),
             selectInput("Method 2", "Choose Method 2", choices = models, selected = 'Noguera et al.'),
             # sliderInput("year","Choose year",min=1994, max=2014,value=2010,step = 1),
-            sliderInput("range","Choose years",min=1994, max=2014,value=c(2006,2007),step = 1),
+            # sliderInput("range","Choose years",min=1994, max=2014,value=c(2006,2007),step = 1),
+            sliderInput("range","Choose years",min=as.Date('1994-01-01'), max= as.Date('2014-12-31'),
+                        value=c(as.Date('2006-01-01'),as.Date('2006-12-31'))),
             width=3,
-            
+            submitButton("Update plots", icon('refresh'), width = '100%'),
+            br(),
             leafletOutput("graph6"),
-            
             
         ),
         mainPanel(
@@ -57,6 +59,9 @@ ui <- fluidPage(
             plotlyOutput("graph3"),
             plotlyOutput("graph4"),
             plotlyOutput("graph5"),
+            br(),
+            br(),
+            downloadButton('downloadData','Download Data'),
             # leafletOutput("graph6"),
             h5("App for flash drought visualisation, method and dataset comparison. Six methods are compared:"),
             h6('  * Ford, T. W. & Labosier, C. F. Meteorological conditions associated with the onset of flash drought in the Eastern United States, Agricultural and Forest Meteorology, Elsevier BV, 2017, 247, 414-423'),
@@ -91,10 +96,15 @@ server <- function(input, output, session){
         range = input$range
         
         #update limits slider on the fly
-        updateSliderInput(session, "range", min=min(year(complete_series$Date)))
-        updateSliderInput(session, "range", max=max(year(complete_series$Date))+1)
+        updateSliderInput(session, "range", min=min(as.Date(complete_series$Date)))
+        updateSliderInput(session, "range", max=max(as.Date(complete_series$Date)))
         
-        complete_series_select <- complete_series[(year(complete_series$Date) >= range[1] & year(complete_series$Date) < range[2]),] 
+        complete_series_select <- complete_series[(complete_series$Date >= range[1] & complete_series$Date <= range[2]),] 
+        # updateSliderInput(session, "range", min=min(year(complete_series$Date)))
+        # updateSliderInput(session, "range", max=max(year(complete_series$Date))+1)
+        # 
+        # complete_series_select <- complete_series[(year(complete_series$Date) >= range[1] & year(complete_series$Date) < range[2]),] 
+        
         
         data_station_select1 <- data_stations[which(substr(file1,start = 1, stop = 6) == data_stations$Station),]
         data_station_select2 <- data_stations[which(substr(file1,start = 1, stop = 6) != data_stations$Station),]
@@ -217,11 +227,14 @@ server <- function(input, output, session){
         output$graph6 <- renderLeaflet({
             leaflet() %>% addTiles() %>%
                 addCircleMarkers(data = data_station_select1, lat = ~Latitude, lng = ~Longitude, radius = ~Duration/1.5,
-                                 opacity = 1, fillOpacity = 1, color = c('black'),weight = 2, popup = ~IGPB2, fillColor = ~color1) %>%
+                                 opacity = 1, fillOpacity = 1, color = c('black'),weight = 2, 
+                                 popup = paste(data_station_select1$Station, '<br>',data_station_select1$IGPB2), fillColor = ~color1) %>%
                 addCircleMarkers(data = data_station_select2, lat = ~Latitude, lng = ~Longitude, radius = ~Duration/1.5,
-                                 opacity = 0, fillOpacity = 0.33, popup = ~IGPB2, fillColor = ~color1) %>%
+                                 opacity = 0, fillOpacity = 0.5, popup = paste(data_station_select2$Station, '<br>',data_station_select2$IGPB2), 
+                                 fillColor = ~color1) %>%
                 addCircleMarkers(data = data_stations, lat = ~Latitude, lng = ~Longitude, radius = 1,
-                                 opacity = 0, fillOpacity = 1, popup = ~IGPB2, fillColor = 'black')%>%
+                                 opacity = 0, fillOpacity = 1, popup = paste(data_stations$Station, '<br>',data_stations$IGPB2), 
+                                 fillColor = 'black')%>%
                 addLegend(position = "bottomright",
                           colors = unique(data_stations$color1),
                           labels = unique(data_stations$IGPB), opacity = 1,
@@ -230,6 +243,14 @@ server <- function(input, output, session){
             
         })
         
+        output$downloadData <- downloadHandler(
+            filename = function() {
+                paste("data-",file1 ,".csv", sep="")
+            },
+            content = function(file) {
+                write.csv(complete_series_select, file)
+            }
+        )
         
     })
     
