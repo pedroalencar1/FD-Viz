@@ -20,7 +20,7 @@ library(RColorBrewer)
 # Data Preparation Steps
 
 models <- c("Mo and Lettenmeier","Ford and Labosier", "Pendergrass et al.","Noguera et al." ,
-            "Christian et al.", "Osman et al.")
+            "Christian et al.", "Osman et al.", 'Alencar et al.')
 stations <- list.files()
 stations <- stations[substr(stations, start = 7, stop = 7) == '_']
 stations <- substr(stations,1,nchar(stations)-4)
@@ -87,7 +87,7 @@ server <- function(input, output, session){
         complete_series <- data1[,-c(1)]
         colnames(complete_series) <- c("Date","Mo and Lettenmeier","Ford and Labosier", 
                                        "Pendergrass et al.","Noguera et al." ,
-                                       "Christian et al.", "Osman et al.","et0_anomaly",
+                                       "Christian et al.", "Osman et al.","Alencar et al.","et0_anomaly",
                                        "eta_anomaly","temperature_anomaly",
                                        "precipitation_anomaly", "swc",
                                        "et0", "eta", "temperature", "precipitation",
