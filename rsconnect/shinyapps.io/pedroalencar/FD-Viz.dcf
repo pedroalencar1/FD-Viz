@@ -5,8 +5,10 @@ account: pedroalencar
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 4089018
-bundleId: 4576553
+bundleId: 4718799
 url: https://pedroalencar.shinyapps.io/FD-Viz/
-when: 1620553764.64366
+when: 1623761781.69566
+lastSyncTime: 1623761781.69566
 asMultiple: FALSE
 asStatic: FALSE
+ignoredFiles: www/metrics.png
