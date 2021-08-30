@@ -1,23 +1,23 @@
-Station	Duration	Latitude	Longitude	IGPB	IGPB2	color1
-AT-Neu	11	47.12	11.32	GRA	Grasslands	#91CF60
-BE-Lon	11	50.55	4.75	CRO	Croplands	#D73027
-BE-Vie	19	50.30	6.00	MF	Mixed forests	#1A9850
-DE-Geb	14	51.10	10.91	CRO	Croplands	#D73027
-DE-Hai	13	51.08	10.45	DBF	Deciduous broadleaf forests	#FEE08B
-DE-Kli	11	50.89	13.52	CRO	Croplands	#D73027
-DE-Lnf	11	51.33	10.37	DBF	Deciduous broadleaf forests	#FEE08B
-DE-Tha	19	50.96	13.57	ENF	Evergreen needleleaf forests	#D9EF8B
-DK-Sor	19	55.49	11.64	DBF	Deciduous broadleaf forests	#FEE08B
-FI-Hyy	19	61.85	24.29	ENF	Evergreen needleleaf forests	#D9EF8B
-FI-Sod	14	67.36	26.64	ENF	Evergreen needleleaf forests	#D9EF8B
-IT-BCi	11	40.52	14.96	CRO	Croplands	#D73027
-IT-Col	19	41.85	13.59	DBF	Deciduous broadleaf forests	#FEE08B
-IT-Cpz	13	41.71	12.38	EBF	Evergreen broadleaf forests	#FFFFBF
-IT-Lav	12	45.96	11.28	ENF	Evergreen needleleaf forests	#D9EF8B
-IT-MBo	11	46.01	11.05	GRA	Grasslands	#91CF60
-IT-Noe	11	40.61	8.15	CSH	Closed shrublands	#FC8D59
-IT-Ren	16	46.59	11.43	ENF	Evergreen needleleaf forests	#D9EF8B
-IT-Ro2	11	42.39	11.92	DBF	Deciduous broadleaf forests	#FEE08B
-IT-SRo	14	43.73	10.28	ENF	Evergreen needleleaf forests	#D9EF8B
-CH-Lae	11	47.48	8.36	MF	Mixed forests	#1A9850
-CH-Oe2	11	47.29	7.73	CRO	Croplands	#D73027
+Station	Duration	Latitude	Longitude	IGPB	IGPB2	color1	climate
+AT-Neu	11	47.12	11.32	GRA	Grasslands	#91CF60	Dfc
+BE-Lon	11	50.55	4.75	CRO	Croplands	#D73027	Cfb
+BE-Vie	19	50.3	6	MF	Mixed forests	#1A9850	Cfb
+DE-Geb	14	51.1	10.91	CRO	Croplands	#D73027	Cfb
+DE-Hai	13	51.08	10.45	DBF	Deciduous broadleaf forests	#FEE08B	Cfb
+DE-Kli	11	50.89	13.52	CRO	Croplands	#D73027	Cfb
+DE-Lnf	11	51.33	10.37	DBF	Deciduous broadleaf forests	#FEE08B	Cfb
+DE-Tha	19	50.96	13.57	ENF	Evergreen needleleaf forests	#D9EF8B	Cfb
+DK-Sor	19	55.49	11.64	DBF	Deciduous broadleaf forests	#FEE08B	Cfb
+FI-Hyy	19	61.85	24.29	ENF	Evergreen needleleaf forests	#D9EF8B	Dfc
+FI-Sod	14	67.36	26.64	ENF	Evergreen needleleaf forests	#D9EF8B	Dfc
+IT-BCi	11	40.52	14.96	CRO	Croplands	#D73027	Csa
+IT-Col	19	41.85	13.59	DBF	Deciduous broadleaf forests	#FEE08B	Cfa
+IT-Cpz	13	41.71	12.38	EBF	Evergreen broadleaf forests	#FFFFBF	Csa
+IT-Lav	12	45.96	11.28	ENF	Evergreen needleleaf forests	#D9EF8B	Cfb
+IT-MBo	11	46.01	11.05	GRA	Grasslands	#91CF60	Dfb
+IT-Noe	11	40.61	8.15	CSH	Closed shrublands	#FC8D59	Csa
+IT-Ren	16	46.59	11.43	ENF	Evergreen needleleaf forests	#D9EF8B	Dfc
+IT-Ro2	11	42.39	11.92	DBF	Deciduous broadleaf forests	#FEE08B	Csa
+IT-SRo	14	43.73	10.28	ENF	Evergreen needleleaf forests	#D9EF8B	Csa
+CH-Lae	11	47.48	8.36	MF	Mixed forests	#1A9850	Cfb
+CH-Oe2	11	47.29	7.73	CRO	Croplands	#D73027	Cfb
